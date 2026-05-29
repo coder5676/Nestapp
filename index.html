@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Music</title>
+
+<style>
+
+body{
+    background:#0f0f0f;
+    color:white;
+    font-family:Arial, Helvetica, sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.formbox{
+    width:400px;
+    background:#1b1b1b;
+    padding:25px;
+    border-radius:20px;
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+    box-shadow:0 0 20px rgba(0,0,0,0.4);
+}
+
+h1{
+    margin:0;
+    font-size:28px;
+}
+
+input{
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    background:#2a2a2a;
+    color:white;
+    font-size:15px;
+}
+
+button{
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    background:white;
+    color:black;
+    font-size:16px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+button:hover{
+    opacity:0.9;
+}
+
+#status{
+    font-size:14px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="formbox">
+
+    <h1>Add Music</h1>
+
+    <input type="file" id="musicfile" accept="audio/*">
+
+    <input type="text" id="title" placeholder="Music title">
+
+    <input type="text" id="thumbnail" placeholder="Thumbnail filename">
+
+    <input type="text" id="tokens" placeholder="Tokens separated by comma">
+
+    <button id="uploadbtn">
+        Upload Music
+    </button>
+
+    <p id="status"></p>
+
+</div>
+
+<script>
+
+const btn = document.getElementById("uploadbtn");
+
+btn.addEventListener("click", async () => {
+
+    const fileInput =
+    document.getElementById("musicfile");
+
+    const title =
+    document.getElementById("title").value;
+
+    const thumbnail =
+    document.getElementById("thumbnail").value;
+
+    const tokens =
+    document.getElementById("tokens").value;
+
+    if (!fileInput.files[0]) {
+
+        alert("Select a music file");
+        return;
+
+    }
+
+    const formData = new FormData();
+
+    formData.append("file", fileInput.files[0]);
+    formData.append("title", title);
+    formData.append("thumbnail", thumbnail);
+    formData.append("tokens", tokens);
+
+    try {
+
+        const res = await fetch(
+            "http://127.0.0.1:8000/addsong",
+            {
+                method: "POST",
+                body: formData
+            }
+        );
+
+        const data = await res.json();
+
+        console.log(data);
+
+        document.getElementById("status").innerText =
+        "Music uploaded successfully";
+
+    } catch(err) {
+
+        console.log(err);
+
+        document.getElementById("status").innerText =
+        "Upload failed";
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
