@@ -1,151 +1,618 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Add Music</title>
+
+<title>Media Manager</title>
+
 
 <style>
+@font-face {
+    font-family: 'lexend';
+    src: url('Lexend-VariableFont_wght.ttf') format('truetype');
 
+}
 body{
-    background:#0f0f0f;
-    color:white;
-    font-family:Arial, Helvetica, sans-serif;
+    background:#ffffff;
+    
     display:flex;
     justify-content:center;
     align-items:center;
     height:100vh;
+    font-family: lexend;
 }
 
-.formbox{
-    width:400px;
-    background:#1b1b1b;
+
+.container{
+
+    width:96%;
+    height:100vh;
+    background:#ffffff;
     padding:25px;
     border-radius:20px;
     display:flex;
+    flex-direction: column;
+
+
+}
+
+
+.tabs{
+
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+
+}
+
+
+.tabs button{
+
+    flex:1;
+    padding:15px;
+    font-family: lexend;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:400;
+    background-color: dodgerblue;
+    border-radius: 100px;
+    margin-inline: 20px;
+    color:white;
+    font-size: 18px;
+
+}
+
+
+
+.form{
+
+    display:none;
     flex-direction:column;
     gap:15px;
-    box-shadow:0 0 20px rgba(0,0,0,0.4);
+
 }
 
-h1{
-    margin:0;
-    font-size:28px;
+
+.active{
+
+    display:flex;
+
 }
+
 
 input{
-    padding:14px;
-    border:none;
+
+    padding:20px;
     border-radius:12px;
-    background:#2a2a2a;
-    color:white;
-    font-size:15px;
+  
+    color:rgb(0, 0, 0);
+    border: 1px solid lightgrey;
+    font-size: 18px;
+    font-family: lexend;
+
 }
 
-button{
-    padding:14px;
+
+.upload{
+
+    padding:18px;
     border:none;
-    border-radius:12px;
-    background:white;
-    color:black;
-    font-size:16px;
+    border-radius:100px;
+    background:rgb(0, 0, 0);
     cursor:pointer;
     font-weight:bold;
+    color:white;
+    border-radius: 100px;
+    font-family: lexend;
+    font-size: 18px;
+
 }
 
-button:hover{
-    opacity:0.9;
+
+h1{
+
+    margin-top:50px;
+    margin-left: 20px;
+    
+}p{
+margin:20px;
+font-size: 20px;
+color:grey;
+margin-bottom: 30px;
 }
+
 
 #status{
-    font-size:14px;
+
+    margin-top:15px;
+
+}
+.scannerdiv{
+    width:100%;
+    height:100vh;
+    background-color: white;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+
+}.scannerdiv button{
+    margin-top: 40px;
+    margin-bottom: 40px;
+    padding: 15px;
+    font-size: 18px;
+    font-family: lexend;
+    color:white;
+    background-color: black;
+    border-radius: 100px;
+    border: 0px;
+    width:200px;
+    text-align: center;
+
+}#reader{
+    border-radius: 20px;
+    overflow: hidden;
+    border:none;
+    width:300px
 }
 
 </style>
+
 </head>
+
+
 <body>
 
-<div class="formbox">
+<div class="scannerdiv" id="scannerdiv">
+    <h1 style="font-size: 40px;color:black;margin-top: 30px;">Connect</h1>
+    <p style="font-size: 20px;color:rgb(27, 27, 27);margin-top: 10px;margin-bottom: 30px;padding:15px;border-radius: 100px;background-color: whitesmoke;">Scan the QR to connect.</p>
+    <div id="reader" style="width:300px"></div>
+</div>
+<div class="container" id="container">
 
-    <h1>Add Music</h1>
 
-    <input type="file" id="musicfile" accept="audio/*">
+<h1>NestHome</h1>
+<p>Upload Music, Videos and Images</p>
 
-    <input type="text" id="title" placeholder="Music title">
 
-    <input type="text" id="thumbnail" placeholder="Thumbnail filename">
 
-    <input type="text" id="tokens" placeholder="Tokens separated by comma">
+<div class="tabs">
 
-    <button id="uploadbtn">
-        Upload Music
-    </button>
 
-    <p id="status"></p>
+<button onclick="showForm('movie')">
+Movie
+</button>
+
+
+<button onclick="showForm('music')">
+Music
+</button>
+
+
+<button onclick="showForm('image')">
+Images
+</button>
+
 
 </div>
 
+
+
+
+
+<!-- MOVIE FORM -->
+
+<div id="movie" class="form active">
+
+
+<input 
+type="file"
+id="movieFile">
+
+
+<input
+type="text"
+id="movieTitle"
+placeholder="Movie title">
+
+
+<input
+type="file"
+id="movieThumb">
+
+
+<input
+type="text"
+id="movieTokens"
+placeholder="Tokens separated by comma">
+
+
+<button 
+class="upload"
+onclick="uploadMovie()">
+
+Upload Movie
+
+</button>
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- MUSIC FORM -->
+
+
+<div id="music" class="form">
+
+
+<input
+type="file"
+id="musicFile">
+
+
+<input
+type="text"
+id="musicTitle"
+placeholder="Song title">
+
+
+<input
+type="file"
+id="musicThumb">
+
+
+<input
+type="text"
+id="musicTokens"
+placeholder="Tokens separated by comma">
+
+
+<button
+class="upload"
+onclick="uploadMusic()">
+
+Upload Song
+
+</button>
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- IMAGE FORM -->
+
+
+<div id="image" class="form">
+
+
+<input
+type="file"
+id="imageFile">
+
+
+<input
+type="text"
+id="imageTitle"
+placeholder="Image title">
+
+
+<input
+type="text"
+id="imageTokens"
+placeholder="Tokens separated by comma">
+
+
+<button
+class="upload"
+onclick="uploadImage()">
+
+Upload Image
+
+</button>
+
+
+</div>
+
+
+
+<p id="status"></p>
+
+
+
+</div>
+
+
+<script src="https://unpkg.com/html5-qrcode"></script>
+
+
 <script>
 
-const btn = document.getElementById("uploadbtn");
 
-btn.addEventListener("click", async () => {
 
-    const fileInput =
-    document.getElementById("musicfile");
+const SERVER =
+"";
 
-    const title =
-    document.getElementById("title").value;
-
-    const thumbnail =
-    document.getElementById("thumbnail").value;
-
-    const tokens =
-    document.getElementById("tokens").value;
-
-    if (!fileInput.files[0]) {
-
-        alert("Select a music file");
-        return;
-
+const scanner = new Html5QrcodeScanner(
+    "reader",
+    {
+        fps:10,
+        qrbox:350
     }
+);
 
-    const formData = new FormData();
 
-    formData.append("file", fileInput.files[0]);
-    formData.append("title", title);
-    formData.append("thumbnail", thumbnail);
-    formData.append("tokens", tokens);
+scanner.render(
 
-    try {
+    async(decodedText)=>{
 
-        const res = await fetch(
-            "http://127.0.0.1:8000/addsong",
-            {
-                method: "POST",
-                body: formData
-            }
+        console.log(
+            "QR:",
+            decodedText
         );
 
-        const data = await res.json();
 
-        console.log(data);
+        // use server URL
+        SERVER = decodedText;
+        
+        await scanner.clear();
+        document.getElementById("container").style.display="flex";
+        document.getElementById("scannerdiv").style.display="none";
 
-        document.getElementById("status").innerText =
-        "Music uploaded successfully";
+    },
 
-    } catch(err) {
 
-        console.log(err);
+    (error)=>{
 
-        document.getElementById("status").innerText =
-        "Upload failed";
+        // scanning errors happen continuously
+        // ignore them
 
     }
+
+);
+
+
+
+function showForm(name){
+
+
+document.querySelectorAll(".form")
+.forEach(
+form=>form.classList.remove("active")
+);
+
+
+document.getElementById(name)
+.classList.add("active");
+
+
+}
+
+
+
+
+
+
+
+
+async function uploadMovie(){
+
+
+let data=new FormData();
+
+
+data.append(
+"file",
+movieFile.files[0]
+);
+
+
+data.append(
+"title",
+movieTitle.value
+);
+
+
+
+data.append(
+"thumbnail",
+movieThumb.files[0]
+);
+
+
+
+data.append(
+"tokens",
+movieTokens.value
+);
+
+
+
+await send(
+"/addmovie",
+data,
+"Movie"
+);
+
+
+}
+
+
+
+
+
+
+
+
+
+async function uploadMusic(){
+
+
+let data=new FormData();
+
+
+data.append(
+"file",
+musicFile.files[0]
+);
+
+
+data.append(
+"title",
+musicTitle.value
+);
+
+
+
+data.append(
+"thumbnail",
+musicThumb.files[0]
+);
+
+
+
+data.append(
+"tokens",
+musicTokens.value
+);
+
+
+
+await send(
+"/addsong",
+data,
+"Song"
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+async function uploadImage(){
+
+
+let data=new FormData();
+
+
+data.append(
+"file",
+imageFile.files[0]
+);
+
+
+
+data.append(
+"title",
+imageTitle.value
+);
+
+
+
+data.append(
+"tokens",
+imageTokens.value
+);
+
+
+
+await send(
+"/addimage",
+data,
+"Image"
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+async function send(url,data,name){
+if(!SERVER){
+
+    alert("Scan server QR first");
+    return;
+
+}
+
+try{
+
+
+let res =
+await fetch(
+SERVER+url,
+{
+
+method:"POST",
+body:data
 
 });
 
+
+let result =
+await res.json();
+
+
+console.log(result);
+
+
+
+status.innerText =
+name+" uploaded successfully";
+
+
+}
+
+catch(err){
+
+
+console.log(err);
+
+
+status.innerText =
+"Upload failed";
+
+
+}
+
+
+}
+
+
+
+
 </script>
 
+
 </body>
+
 </html>
